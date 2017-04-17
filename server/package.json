@@ -1,0 +1,9 @@
+{
+  "name": "crossed-wires-server",
+  "version": "0.0.5",
+  "dependencies": {
+    "koa-trie-router": "^2.1.2",
+    "koa": "^2.2.0",
+    "lodash": "^4.17.4"
+  }
+}
