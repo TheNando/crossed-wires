@@ -1,12 +1,20 @@
 'use strict'
 
-// const _ = require('lodash')
 const fs = require('fs')
 
+/** Class containing utility methods to ease common tasks. */
 class Utils {
     constructor () {
     }
 
+    /**
+     * Asynchronously read UTF-8 encoded file using Promise pattern.
+     * 
+     * @param {string} file - The path string of file to read
+     * @return {Promise.<{}>}
+     *   - @resolve returns string file data<br/>
+     *   - @reject returns readFile error
+     */
     static readFile (file) {
         return new Promise(function(resolve, reject) {
             fs.readFile(file, 'utf8', (err, data) => {
@@ -19,18 +27,32 @@ class Utils {
         });
     }
 
+    /**
+     * Asynchronously read UTF-8 encoded file as JSON using Promise pattern.
+     * 
+     * @param {string} file - The path string of file to read
+     * @return {Promise.<{}>}
+     *   - @resolve returns file data as JSON object<br/>
+     *   - @reject returns readFile error
+     */
     static readJson (file) {
         return Utils.readFile(file).then(data => JSON.parse(data))
     }
 
-    static readJsonSync (filePath) {
-        let fileExists = fs.existsSync(filePath)
+    /**
+     * Synchronously read UTF-8 encoded file as JSON.
+     * 
+     * @param {string} file - The path string of file to read
+     * @return {Object} file data as JSON object
+     */
+    static readJsonSync (file) {
+        let fileExists = fs.existsSync(file)
         if (!fileExists) {
             return null
         }
             
         try {
-            return JSON.parse(fs.readFileSync(dataPath))
+            return JSON.parse(fs.readFileSync(file))
         } catch (error) {
             return null
         }
@@ -38,4 +60,10 @@ class Utils {
 
 }
 
+/**
+ * Utils module.
+ * @module utils
+ */
+
+/** Utils class. */
 module.exports = Utils

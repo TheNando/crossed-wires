@@ -24,13 +24,6 @@ app.use(async (ctx, next) => {
   }
 });
 
-router.get('/admin/load-questions',
-    async function (ctx, next) {
-        Questions.load()
-        ctx.body = 'Questions loaded'
-    }
-)
-
 router.get('/admin/save-questions',
     async function (ctx, next) {
         Questions.save()
@@ -50,7 +43,7 @@ router.get('/question',
     }
 )
 
-router.get('/hello',
+router.get('/login',
     async function (ctx, next) {
         ctx.body = `Hello ${ Names.generate() }`
     }

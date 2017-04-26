@@ -289,10 +289,22 @@ const nouns = [
     'Zebra'
 ]
 
+/** Class used to generate random user names. */
 class Names {
+    /**
+     * Generate a random player name consisting of an adjective and a noun.
+     * 
+     * @return {string} Randomly generated name.
+     */
     static generate () {
         return _.sample(adjectives) + ' ' + _.sample(nouns)
     }
 }
 
+/**
+ * Names module.
+ * @module names
+ */
+
+/** Names class. */
 module.exports = Names
