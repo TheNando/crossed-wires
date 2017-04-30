@@ -1,8 +1,9 @@
 {
-  "verbose": true,
   "ignore": [
       "data/*",
-      "questions/*"
+      "docs/*",
+      "questions/*",
+      "*.json"
     ],
   "execMap": {}
 }

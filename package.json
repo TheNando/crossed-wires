@@ -1,0 +1,17 @@
+{
+  "name": "crossed-wires-server",
+  "version": "0.0.5",
+  "scripts": {
+    "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose",
+    "host-docs": "cd docs; python3 -m http.server; cd .."
+  },
+  "dependencies": {
+    "koa-trie-router": "^2.1.2",
+    "koa": "^2.2.0",
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "jsdoc": "^3.4.3",
+    "minami": "^1.2.3"
+  }
+}

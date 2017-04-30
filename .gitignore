@@ -22,3 +22,9 @@ node_modules
 
 # IDE files
 .vscode
+
+# Zip Archives
+*.zip
+
+# Docs
+docs
