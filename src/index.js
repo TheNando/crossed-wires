@@ -49,6 +49,12 @@ router.get('/login',
     }
 )
 
+router.get('/test',
+    async function (ctx, next) {
+        ctx.body = `This is a test`
+    }
+)
+
 
 app.use(router.middleware())
 app.listen(3000)
