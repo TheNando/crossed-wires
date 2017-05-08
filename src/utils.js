@@ -1,10 +1,34 @@
 'use strict'
 
 const fs = require('fs')
+const crypto = require('crypto')
 
 /** Class containing utility methods to ease common tasks. */
 class Utils {
     constructor () {
+    }
+
+    /**
+     * Generate a new, random user session ID.
+     * 
+     * @return {string} session ID
+     */
+    static generateId () {
+        return crypto.randomBytes(16).toString('hex')
+    }
+
+    /**
+     * Retrieve context request data payload as object
+     * 
+     * @param {Object} ctx - Koa context from a POST or PUT route event
+     * @return {Object} body payload object
+     */
+    static getBody (ctx) {
+        return new Promise(function (resolve,reject) {
+            let data = ''
+            ctx.req.on('data', chunk => data += chunk)
+            ctx.req.on('end', chunk => resolve(JSON.parse(data)))
+        })
     }
 
     /**
