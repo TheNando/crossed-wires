@@ -1,9 +1,15 @@
 {
   "name": "crossed-wires-server",
   "version": "0.0.5",
+  "author": "Nando Peña",
+  "license": "None",
   "scripts": {
     "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose",
     "host-docs": "cd docs; python3 -m http.server; cd .."
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TheNando/crossed-wires.git"
   },
   "dependencies": {
     "koa-trie-router": "^2.1.2",

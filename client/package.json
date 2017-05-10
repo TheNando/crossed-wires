@@ -1,0 +1,21 @@
+{
+  "name": "crossed-wires-client",
+  "version": "0.0.1",
+  "scripts": {
+    "serve": "node ./tasks/browser-sync.js",
+    "vendor": "./tasks/vendor.sh",
+    "js": "./node_modules/.bin/watchify src/app.js -o src/bundle.js --debug",
+    "dev": "node --inspect server & npm run js & npm run serve"
+  },
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-resource": "^1.5.8",
+    "angular-ui-router": "^0.3.2",
+    "lodash": "^4.16.6",
+    "stylus": "^0.54.5"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.17.5",
+    "watchify": "^3.8.0"
+  }
+}
