@@ -28,3 +28,7 @@ node_modules
 
 # Docs
 docs
+
+# Compiled Scripts
+bundle.js
+app.css

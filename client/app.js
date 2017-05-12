@@ -1,11 +1,14 @@
 'use strict';
 
 /* Create and configure application */
-var angular = require('angular');
+var angular = require('../node_modules/angular');
 
 angular.module('cardinal', [
-  require('angular-ui-router'),
-  require('angular-resource')
+  require('../node_modules/angular-animate'),
+  require('../node_modules/angular-aria'),
+  require('../node_modules/angular-material'),
+  require('../node_modules/angular-resource'),
+  require('../node_modules/angular-ui-router')
 ])
 
 .service('DataService', require('./shared/data.service.js'))
