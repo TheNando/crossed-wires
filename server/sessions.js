@@ -3,9 +3,13 @@
 const Names = require('./names')
 const Utils = require('./utils')
 
+const baseSession = {
+    id: null,
+    user: null
+}
+
 const baseUser = {
     email: null,
-    id: null,
     name: null
 }
 
@@ -18,25 +22,33 @@ class Sessions {
 
     /**
      * Generate a new user and session.
-     * 
+     *
      * @return {Object} Newly generated user session data.
      */
     newUser (email) {
-        let user
+        let session
 
         if (!email) {
             return null
         }
-        
-        user = Object.assign({}, baseUser)
 
-        user.email = email
-        user.id = Utils.generateId()
-        user.name = Names.generate()
+        // Check for pre-existing user session with email
+        session = this.sessions.find(session => email === session.user.email);
 
-        this.sessions.push(user)
+        if (!session) {
+            let user = Object.assign({}, baseUser)
+            session = Object.assign({}, baseSession)
 
-        return user
+            user.email = email
+            user.name = Names.generate()
+
+            session.id = Utils.generateId()
+            session.user = user
+
+            this.sessions.push(session)
+        }
+
+        return session
     }
 }
 

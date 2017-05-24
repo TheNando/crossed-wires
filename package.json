@@ -6,10 +6,11 @@
   "scripts": {
     "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose",
     "host-docs": "cd docs; python3 -m http.server; cd ..",
+    "dev-api": "./node_modules/.bin/nodemon server",
     "serve": "node ./tasks/browser-sync.js",
     "vendor": "./tasks/vendor.sh",
     "js": "./node_modules/.bin/watchify client/app.js -o client/bundle.js --debug",
-    "dev": "yarn js & yarn serve"
+    "dev-ui": "yarn js & yarn serve"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,7 @@
     "browser-sync": "^2.17.5",
     "jsdoc": "^3.4.3",
     "minami": "^1.2.3",
-    "watchify": "^3.8.0"    
+    "nodemon": "^1.11.0",
+    "watchify": "^3.8.0"
   }
 }

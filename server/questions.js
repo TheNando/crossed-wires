@@ -4,8 +4,8 @@ const _ = require('lodash')
 const Utils = require('./utils')
 const fs = require('fs')
 
-const dataPath = 'src/data/questions.json'
-const questionsDir = 'src/questions/'
+const dataPath = 'server/data/questions.json'
+const questionsDir = 'server/questions/'
 
 /** Class used to manipulate quiz question data. */
 class Questions {
@@ -14,7 +14,7 @@ class Questions {
      * questions from a questions.json file located in the data directory. If
      * that fails to load valid data, attempt to reload all questions from all
      * files in the questions directory.
-     * 
+     *
      * Once questions are loaded, execute an interval function, setting current
      * available question each time the configured duration has elapsed.
      */
@@ -42,7 +42,7 @@ class Questions {
     /**
      * Iterate through each file in directory and compile questions in file,
      * returning compiled questions.
-     * 
+     *
      * @param {string} dir - The path string of a directory containing question
      *                       text files.
      * @return {Object} An object containing arrays of question items and
@@ -63,7 +63,7 @@ class Questions {
 
     /**
      * Retrieve question items and categories from JSON file.
-     * 
+     *
      * @param {string} path - The path string of JSON file containing question
      *                        data.
      * @return {Object} An object containing arrays of question items and
@@ -77,7 +77,7 @@ class Questions {
 
     /**
      * Retrieve question items array from text file.
-     * 
+     *
      * @param {string} path - The path string of text file containing question
      *                        data.
      * @return {Array} An array containing of question items.
@@ -85,7 +85,7 @@ class Questions {
     static fromText (path) {
         let questions = []
         let question = {}
-        
+
         let content = fs.readFileSync(questionsDir + path, 'utf8')
 
         content.split('\n').forEach(line => {
@@ -106,7 +106,7 @@ class Questions {
 
     /**
      * Retrieve currently active question.
-     * 
+     *
      * @return {Object} Currently active question.
      */
     get () {
@@ -115,7 +115,7 @@ class Questions {
 
     /**
      * Get info on currently loaded questions
-     * 
+     *
      * @return {Object} Object containing info on currently loaded questions.
      */
     info () {
@@ -130,7 +130,7 @@ class Questions {
 
     /**
      * Retrieve a random question from all loaded questions.
-     * 
+     *
      * @return {Object} A question.
      */
     random () {
