@@ -4,8 +4,8 @@ const _ = require('lodash')
 const Utils = require('./utils')
 const fs = require('fs')
 
-const dataPath = 'server/data/questions.json'
-const questionsDir = 'server/questions/'
+const dataPath = './server/data/questions.json'
+const questionsDir = './server/questions/'
 
 /** Class used to manipulate quiz question data. */
 class Questions {
