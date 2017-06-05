@@ -9,6 +9,15 @@ class Utils {
     }
 
     /**
+     * Generate a random hex color value string.
+     * 
+     * @return {string} hex color value string
+     */
+    static generateColor () {
+        return '#' + crypto.randomBytes(3).toString('hex')
+    }
+
+    /**
      * Generate a new, random user session ID.
      * 
      * @return {string} session ID

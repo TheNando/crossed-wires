@@ -13,7 +13,7 @@ const baseUser = {
     name: null
 }
 
-/** Class used to create session data for users. */
+/** Class used to create users and user sessions. */
 class Sessions {
     /** Create an instance of Sessions class. */
     constructor () {
@@ -23,7 +23,7 @@ class Sessions {
     /**
      * Generate a new user and session.
      *
-     * @return {Object} Newly generated user session data.
+     * @return {Object} Newly generated user session.
      */
     newUser (email) {
         let session
@@ -33,7 +33,7 @@ class Sessions {
         }
 
         // Check for pre-existing user session with email
-        session = this.sessions.find(session => email === session.user.email);
+        session = this.sessions.find(session => email === session.user.email)
 
         if (!session) {
             let user = Object.assign({}, baseUser)

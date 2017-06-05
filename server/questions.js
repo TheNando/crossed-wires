@@ -22,11 +22,11 @@ class Questions {
         this.current = null
 
         // Try and load data from json file before trying raw questions
-        _.assign(this, Questions.fromJson(dataPath))
+        Object.assign(this, Questions.fromJson(dataPath))
 
         // If that failed, load raw questions
         if (_.isEmpty(this.items)) {
-            _.assign(this, Questions.fromDir(questionsDir))
+            Object.assign(this, Questions.fromDir(questionsDir))
         }
 
         // Bind 'this' so setNext can access instance within setInterval
