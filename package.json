@@ -1,0 +1,38 @@
+{
+  "name": "crossed-wires",
+  "version": "0.0.5",
+  "author": "Nando Peña",
+  "license": "None",
+  "scripts": {
+    "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose",
+    "host-docs": "cd docs; python3 -m http.server; cd ..",
+    "dev-api": "./node_modules/.bin/nodemon server",
+    "serve": "node ./tasks/browser-sync.js",
+    "vendor": "./tasks/vendor.sh",
+    "js": "./node_modules/.bin/watchify client/app.js -o client/bundle.js --debug",
+    "dev-ui": "yarn js & yarn serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TheNando/crossed-wires.git"
+  },
+  "dependencies": {
+    "angular-animate": "^1.6.4",
+    "angular-aria": "^1.6.4",
+    "angular-material": "^1.1.4",
+    "angular-resource": "^1.5.8",
+    "angular-ui-router": "^0.3.2",
+    "angular": "^1.5.8",
+    "koa-trie-router": "^2.1.2",
+    "koa": "^2.2.0",
+    "lodash": "^4.17.4",
+    "stylus": "^0.54.5"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.17.5",
+    "jsdoc": "^3.4.3",
+    "minami": "^1.2.3",
+    "nodemon": "^1.11.0",
+    "watchify": "^3.8.0"
+  }
+}

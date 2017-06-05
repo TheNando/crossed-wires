@@ -1,0 +1,9 @@
+{
+  "ignore": [
+      "data/*",
+      "docs/*",
+      "questions/*",
+      "*.json"
+    ],
+  "execMap": {}
+}
