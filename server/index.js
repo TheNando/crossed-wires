@@ -4,6 +4,7 @@ const _ = require('lodash')
 const Koa = require('koa')
 const Questions = new (require('./questions'))()
 const Sessions = new (require('./sessions'))()
+const Teams = new (require('./teams'))()
 const Utils = require('./utils')
 
 let app = new Koa()
@@ -34,7 +35,10 @@ router.get('/admin/save-questions',
 
 router.get('/admin/info',
     async function  (ctx, next) {
-        ctx.body = Questions.info()
+        ctx.body = {
+            questions: Questions.info(),
+            teams: Teams.info()
+        }
     }
 )
 
@@ -51,6 +55,15 @@ router.get('/question',
     }
 )
 
+router.post('/teams',
+    async function (ctx, next) {
+        let post = await Utils.getBody(ctx)
+        ctx.body = Teams.newTeam(post.name, post.color)
+    }
+)
+
 
 app.use(router.middleware())
 app.listen(3000)
+
+console.log('Listening on localhost port 3000')

@@ -22,10 +22,10 @@ class Teams {
      * data, if exists.
      */
     constructor () {
-        this.teams = null
+        this.teams = {}
 
         // Load data from json file if it exists
-        Object.assign(this, Teams.fromJson(dataPath))
+        Object.assign(this.teams, Teams.fromJson(dataPath))
     }
 
     /**
@@ -58,6 +58,19 @@ class Teams {
     }
 
     /**
+     * Get info on currently loaded teams.
+     *
+     * @return {Object} Dictionary of currently loaded teams.
+     */
+    info () {
+        return Object.keys(this.teams).map(team => {
+            const {name, color, players} = this.teams[team];
+            const count = players.length
+            return {name, color, count}
+        })
+    }
+
+    /**
      * Create a new team.
      *
      * @return {Object} Newly generated team data.
@@ -70,24 +83,22 @@ class Teams {
             return null
         }
 
-        // Check for pre-existing user session with email
-        team = this.teams.find(team => name === team.name)
-
-        if (team) {
+        // Check for pre-existing team by name
+        if (this.teams[name]) {
             return null
         }
 
         team = Object.assign({}, baseTeam)
 
         team.name = name
-        team.color = rxIsColor.test(color) ? color : Utils.generateColor()
+        team.color = rxIsColor.test(color) ? color.toLowerCase() : Utils.generateColor()
 
         this.teams[name] = team
 
         return team
     }
 
-    /** Save currently loaded question data to JSON file */
+    /** Save currently loaded question data to JSON file. */
     save () {
         fs.writeFile(dataPath, JSON.stringify(this.teams))
     }
