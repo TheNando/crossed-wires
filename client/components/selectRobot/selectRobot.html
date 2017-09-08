@@ -1,0 +1,29 @@
+<div class="selected" ng-click="$ctrl.show()">
+  <span
+    class="team-color"
+    ng-style="{ 'background-color': $ctrl.selected.team }">
+  </span>
+  <span
+    class="team-color"
+    ng-style="{ 'background-color': $ctrl.selected.colorHex }">
+  </span>
+  {{ $ctrl.selected.name }}
+</div>
+
+<div class="robots">
+  <div class="robot"
+      ng-show="$ctrl.isShowing"
+      ng-repeat="robot in $ctrl.robots"
+      ng-click="$ctrl.select($index)"
+      ng-style="{ top: 'calc(-42px * ' + (1 + $ctrl.index) }">
+    <span
+      class="team-color"
+      ng-style="{ 'background-color': robot.team }">
+    </span>
+    <span
+      class="team-color"
+      ng-style="{ 'background-color': robot.colorHex }">
+    </span>
+    {{ robot.name }}
+  </div>
+</div>

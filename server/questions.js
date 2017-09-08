@@ -1,11 +1,13 @@
 'use strict'
 
 const _ = require('lodash')
-const Utils = require('./utils')
+const Db = require('./db')
 const fs = require('fs')
+const Utils = require('./utils')
 
 const dataPath = './server/data/questions.json'
 const questionsDir = './server/questions/'
+
 
 /** Class used to manipulate quiz question data. */
 class Questions {
@@ -150,7 +152,13 @@ class Questions {
 
         this.next = this.random()
         this.current.nextCategory = this.next.category
+
+        console.log(this.current)
+
+        Db.getRef('question/current').set(this.current)
     }
 }
 
-module.exports = Questions
+const singleton = new Questions()
+
+module.exports = singleton
