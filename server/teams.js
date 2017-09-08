@@ -1,12 +1,14 @@
 'use strict'
 
-const Utils = require('./utils')
+const Db = require('./db')
 const fs = require('fs')
+const Utils = require('./utils')
 
 const baseTeam = {
     bits: 0,
     colorHex: null,
     name: null,
+    robot: null,
     players: []
 }
 
@@ -84,7 +86,9 @@ class Teams {
         }
 
         // Check for pre-existing team by name
-        if (this.teams[name]) {
+        team = this.teams.find(team => name === team.name)
+
+        if (team) {
             return null
         }
 
@@ -104,4 +108,6 @@ class Teams {
     }
 }
 
-module.exports = Teams
+const singleton = new Teams()
+
+module.exports = singleton

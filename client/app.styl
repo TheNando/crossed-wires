@@ -10,6 +10,13 @@
 
 
 /* Master Style */
+html
+  box-sizing border-box
+
+*,
+*::before,
+*::after
+  box-sizing inherit
 
 body
   font-family 'Open Sans', 'Sans', sans-serif
@@ -25,7 +32,7 @@ body
     padding 15px 20px
     line-height 32px
     text-align left
-    text-shadow 0px 2px 4px rgba(0, 0, 0, 0.4)
+    text-shadow 0px 2px 4px rgba(#000, 0.4)
 
     .crossed
       color #1b46f5
@@ -39,7 +46,7 @@ body
   .page-title
     color #eeeeee
     font-size 25px
-    text-shadow 0 0 6px rgba(0, 0, 0, 0.6)
+    text-shadow 0 0 6px rgba(#000, 0.6)
     margin-bottom 15px
 
 .list
@@ -56,11 +63,11 @@ body
 
 ::-webkit-scrollbar-track
   border-radius 10px
-  background rgba(0, 0, 0, 0)
+  background rgba(#000, 0)
 
 ::-webkit-scrollbar-thumb
   border-radius 10px
-  background rgba(0, 0, 0, 0.4)
+  background rgba(#000, 0.4)
 
 
 
@@ -115,35 +122,39 @@ body
 
 button
   align-items center
-  background 0 0
   background-color #F68C3E;
   border 0
-  border-radius 3px
+  border-radius 5px
+  box-shadow 0 2px 5px 0 rgba(#000, 0.26)
   box-sizing border-box
-  box-shadow 0 2px 5px 0 rgba(0, 0, 0, 0.26)
   color rgb(255, 255, 255)
   cursor pointer
   display inline-block
-  font-size 14px
-  font-weight 500
+  font-size 18px
+  font-weight bold
   line-height 36px
-  margin 6px 8px
+  margin 15px auto
   min-height 36px
   min-width 88px
   outline 0
   overflow hidden
-  padding 0 10px
+  padding 5px
   position relative
   text-align center
   text-decoration none
   text-transform uppercase
-  -webkit-user-select none
+  user-select none
   white-space nowrap
 
+  &:disabled
+    background-color rgba(#000, 0.25)
+    box-shadow none    
+    color rgba(#000, 0.25)
+
 .item
-  box-shadow 0 1px 3px 0 rgba(0, 0, 0, 0.3),
-             0 1px 1px 0 rgba(0, 0, 0, 0.24),
-             0 2px 1px -1px rgba(0, 0, 0, 0.22)
+  box-shadow 0 1px 3px 0 rgba(#000, 0.3),
+             0 1px 1px 0 rgba(#000, 0.24),
+             0 2px 1px -1px rgba(#000, 0.22)
   cursor pointer
   font-size 20px
   margin 8px
@@ -152,12 +163,15 @@ button
   -webkit-user-select none
 
   &:hover
-    box-shadow 0 6px 6px -3px rgba(0, 0, 0, 0.3),
-               0 10px 14px 1px rgba(0, 0, 0, 0.24),
-               0 4px 18px 3px rgba(0, 0, 0, 0.22)
+    box-shadow 0 6px 6px -3px rgba(#000, 0.3),
+               0 10px 14px 1px rgba(#000, 0.24),
+               0 4px 18px 3px rgba(#000, 0.22)
 
 .padded
   padding 40px 100px
 
 .shadow16
   box-shadow 0px 0px 16px rgba(0,0,0,0.6)
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak
+    display none !important

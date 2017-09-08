@@ -52,4 +52,6 @@ class Sessions {
     }
 }
 
-module.exports = Sessions
+const singleton = new Sessions();
+
+module.exports = singleton

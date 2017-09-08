@@ -1,0 +1,44 @@
+select-robot
+  base-color = #569c44
+
+  cursor pointer
+  display block
+  font-size 18px
+  margin-bottom 25px
+  margin-top 10px
+
+  .selected
+    border-bottom 2px solid rgba(base-color, 0.5)
+    height 42px
+    overflow-y hidden
+    padding 10px
+
+    &:after
+      content '\25BC'
+      position absolute
+      right 45px
+
+  .robots
+    position absolute
+    height 0
+    width 0
+    overflow visible
+  
+  .robot
+    background-color #fbfdfb
+    box-shadow 0 10px 20px rgba(#000, 0.25),
+               0 6px 6px rgba(#000, 0.22)
+    height 42px
+    padding 10px
+    position relative
+    width 240px
+    z-index 100
+
+  .team-color
+    display inline-block
+    height 22px
+    vertical-align sub
+    width 20px
+
+    & + .team-color
+      margin 0 10px 0 -5px

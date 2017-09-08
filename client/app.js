@@ -11,31 +11,49 @@ angular.module('cardinal', [
   require('../node_modules/angular-ui-router')
 ])
 
-.service('DataService', require('./shared/data.service.js'))
+.service('AuthService', require('./shared/auth.js'))
+// .service('DataService', require('./shared/data.js'))
 
-.directive('cnClickSelect', require('./shared/cn-click-select.directive.js'))
+// .directive('cnClickSelect', require('./shared/cn-click-select.js'))
 
-.component('games', require('./routes/games/games.component.js'))
-.component('card', require('./components/card/card.component.js'))
+.component('login', require('./components/login/login.js'))
+.component('command', require('./components/command/command.js'))
+.component('selectRobot', require('./components/selectRobot/selectRobot.js'))
 
 .config([
   '$locationProvider', '$stateProvider', '$urlRouterProvider', Config
 ])
 
 .run([
-  '$rootScope', '$state', Run
+  '$rootScope', '$state', 'AuthService', Run
 ]);
 
 function Config ($locationProvider, $stateProvider, $urlRouterProvider) {
+  // function to check the authentication //
+  var Auth = ["$q", "AuthService", function ($q, AuthService) {
+    if (AuthService.isAuthenticated) {
+      return $q.when(AuthService.session);
+    } else {
+      return $q.reject({ authenticated: false });
+    }
+  }];
 
   $locationProvider.html5Mode(true);
 
   // Set routes
   $stateProvider
     .state({
-      name: 'games',
-      url: '/games',
-      template: '<games container="column #top @stretch"></games>'
+      name: 'login',
+      url: '/login',
+      template: '<login></login>'
+    })
+    .state({
+      name: 'command',
+      url: '/command',
+      template: '<command container="column #top @stretch"></command>',
+      resolve: {
+          auth: Auth
+      }
     });
     // .state({
     //   name: 'template',
@@ -60,25 +78,29 @@ function Config ($locationProvider, $stateProvider, $urlRouterProvider) {
     //   }
     // });
 
-    $urlRouterProvider.otherwise('/games');
+    $urlRouterProvider.otherwise('/login');
 }
 
 // App initialization stuff here
-function Run ($rootScope, $state) {
+function Run ($rootScope, $state, AuthService) {
   var authenticated = false;
 
   // // Check for Authentication prior to each route call
-  // $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+  // $rootScope.$on('$stateChangeStart', (event, toState, toParams) => {
   //   if (toState.name === 'login') {
   //     return;
   //   }
-  //
+  
   //   if (!AuthService.isAuthenticated) {
   //     event.preventDefault()
   //     toParams.state = toState.name;
   //     $state.go('login', { reroute: toParams } )
   //   }
   // });
+
+  $rootScope.$on('$stateChangeError', function (_event, _toState, _toParams, _fromState, _fromParams, _error) {
+    $state.go('login', { reroute: _toParams });
+})
 }
 
 

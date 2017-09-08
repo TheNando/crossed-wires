@@ -32,3 +32,6 @@ docs
 # Compiled Scripts
 bundle.js
 app.css
+
+# Credential Files
+server/crossed-wires-firebase-adminsdk-hfnjv-048adeb239.json

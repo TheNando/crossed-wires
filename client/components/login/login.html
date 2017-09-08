@@ -1,0 +1,22 @@
+<form class="login-container" name="loginForm">
+  <label>
+    email
+    <input ng-model="$ctrl.email" type="text" autofocus required>
+  </label>
+
+  <label>
+    team
+    <select-robot
+      ng-model="$ctrl.team"
+      robots="$ctrl.robots">
+    </select-robot>
+  </label>
+
+  <label>
+    handle
+  </label>
+  <div class="handle">test handle</div>
+  <button ng-disabled="loginForm.$invalid">
+    LOGIN
+  </button>
+</form>

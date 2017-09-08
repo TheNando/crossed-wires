@@ -2,39 +2,39 @@
 
 const _ = require('lodash')
 const Koa = require('koa')
-const Questions = new (require('./questions'))()
-const Sessions = new (require('./sessions'))()
-const Teams = new (require('./teams'))()
+const Questions = require('./questions')
+const Sessions = require('./sessions')
 const Utils = require('./utils')
+const Teams = require('./teams')
 
 let app = new Koa()
 let router = new (require('koa-trie-router'))()
 
 // Log call and time
 app.use(async (ctx, next) => {
-  const start = new Date();
-  await next();
-  const ms = new Date() - start;
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
+    const start = new Date();
+    await next();
+    const ms = new Date() - start;
+    console.log(`${ctx.method} ${ctx.url} - ${ms}ms`);
 })
 
 // Pretty print option
 app.use(async (ctx, next) => {
-  await next();
-  if (ctx.query.pretty === '1') {
-      ctx.body = JSON.stringify(ctx.body, null, 4)
-  }
+    await next();
+    if (ctx.query.pretty === '1') {
+        ctx.body = JSON.stringify(ctx.body, null, 4)
+    }
 })
 
 router.get('/admin/save-questions',
-    async function (ctx, next) {
+    async (ctx, next) => {
         Questions.save()
         ctx.body = 'Questions saved'
     }
 )
 
 router.get('/admin/info',
-    async function  (ctx, next) {
+    async (ctx, next) => {
         ctx.body = {
             questions: Questions.info(),
             teams: Teams.info()
@@ -43,14 +43,14 @@ router.get('/admin/info',
 )
 
 router.post('/login',
-    async function (ctx, next) {
+    async (ctx, next) => {
         let post = await Utils.getBody(ctx)
         ctx.body = Sessions.newUser(post.email)
     }
 )
 
 router.get('/question',
-    async function (ctx, next) {
+    async (ctx, next) => {
         ctx.body = Questions.get()
     }
 )
