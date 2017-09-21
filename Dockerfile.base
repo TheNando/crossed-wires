@@ -10,3 +10,19 @@ RUN apt-get update -yq \
     && apt-get update -yq && apt-get install -yq yarn \
     && rm -rf /var/lib/apt/lists/*
 
+# install lighttpd
+RUN     apt-get -y install lighttpd
+
+COPY    files/lighttpd.conf /etc/lighttpd/lighttpd.conf
+
+VOLUME  ["/var/www"]
+
+EXPOSE  8080
+
+RUN     chown -R www-data /var/log/lighttpd
+RUN     touch /var/run/lighttpd.pid
+RUN     chown www-data /var/run/lighttpd.pid
+
+USER    www-data
+
+CMD     ["/usr/sbin/lighttpd", "-D", "-f", "/etc/lighttpd/lighttpd.conf"]

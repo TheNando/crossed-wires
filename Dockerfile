@@ -4,6 +4,6 @@ WORKDIR /app
 COPY package.json /app
 RUN yarn
 COPY . /app
-CMD node src
+CMD node server
 EXPOSE 3000
 

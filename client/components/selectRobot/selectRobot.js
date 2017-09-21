@@ -14,6 +14,7 @@ class selectRobotController {
     this.index = index
     this.selected = this.robots[index]
     this.isShowing = false
+    this.ngModel = this.selected
   }
 
   show() {

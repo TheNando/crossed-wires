@@ -27,6 +27,7 @@
     "firebase-admin": "^5.2.1",
     "koa": "^2.2.0",
     "koa-trie-router": "^2.1.2",
+    "koa2-cors": "^2.0.3",
     "lodash": "^4.17.4",
     "stylus": "^0.54.5"
   },
