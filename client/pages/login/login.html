@@ -8,7 +8,7 @@
   <label>
     team
     <select-robot
-      ng-model="$ctrl.team"
+      ng-model="$ctrl.robot"
       robots="$ctrl.robots">
     </select-robot>
   </label>
@@ -18,7 +18,7 @@
   </label>
   <div class="handle">{{ $ctrl.handle }}</div>
   <button
-      ng-disabled="loginForm.$invalid || !$ctrl.team"
+      ng-disabled="loginForm.$invalid || !$ctrl.robot"
       ng-click="$ctrl.login()">
     LOGIN
   </button>

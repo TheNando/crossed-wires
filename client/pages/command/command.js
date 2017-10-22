@@ -30,5 +30,5 @@ class CommandController {
 
 module.exports = {
   controller: CommandController,
-  templateUrl: './components/command/command.html'
+  templateUrl: './pages/command/command.html'
 }

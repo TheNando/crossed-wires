@@ -1,10 +1,10 @@
 class LoginController {
 
   constructor($http) {
-    this.robots = $http.get('https://crossed-wires.firebaseio.com/robots.json')
-      .then(response => Object.values(response.data)
-        .sort((a,b) => a.name > b.name)
-        .sort((a,b) => a.team > b.team)
+    this.robots = $http.get('http://localhost:3000/robots')
+      .then(response => response.data
+          .sort((a,b) => a.name > b.name)
+          .sort((a,b) => a.team > b.team)
       )
 
     $http.post('http://localhost:3000/names/generate')
@@ -20,7 +20,7 @@ class LoginController {
     const payload = {
       email: this.email,
       handle: this.handle,
-      team: this.team.name
+      robot: this.robot.name
     }
     this._post('http://localhost:3000/login', payload)
   }
@@ -29,6 +29,6 @@ class LoginController {
 
 module.exports = {
   controller: LoginController,
-  templateUrl: './components/login/login.html',
+  templateUrl: './pages/login/login.html',
   bindings: {}
 };

@@ -11,28 +11,29 @@ angular.module('cardinal', [
   require('../node_modules/angular-ui-router')
 ])
 
-.service('AuthService', require('./shared/auth.js'))
-// .service('DataService', require('./shared/data.js'))
+// .service('DataService', require('./services/data.js'))
+// .directive('cnClickSelect', require('./services/cn-click-select.js'))
 
-// .directive('cnClickSelect', require('./shared/cn-click-select.js'))
+.service('Auth', require('./services/auth.js'))
 
-.component('login', require('./components/login/login.js'))
-.component('command', require('./components/command/command.js'))
 .component('selectRobot', require('./components/selectRobot/selectRobot.js'))
+
+.component('login', require('./pages/login/login.js'))
+.component('command', require('./pages/command/command.js'))
 
 .config([
   '$locationProvider', '$stateProvider', '$urlRouterProvider', Config
 ])
 
 .run([
-  '$rootScope', '$state', 'AuthService', Run
+  '$rootScope', '$state', 'Auth', Run
 ]);
 
 function Config ($locationProvider, $stateProvider, $urlRouterProvider) {
   // function to check the authentication //
-  var Auth = ["$q", "AuthService", function ($q, AuthService) {
-    if (AuthService.isAuthenticated) {
-      return $q.when(AuthService.session);
+  var Auth = ["$q", "Auth", function ($q, Auth) {
+    if (Auth.isAuthenticated) {
+      return $q.when(Auth.session);
     } else {
       return $q.reject({ authenticated: false });
     }
@@ -82,7 +83,7 @@ function Config ($locationProvider, $stateProvider, $urlRouterProvider) {
 }
 
 // App initialization stuff here
-function Run ($rootScope, $state, AuthService) {
+function Run ($rootScope, $state, Auth) {
   var authenticated = false;
 
   // // Check for Authentication prior to each route call
@@ -90,8 +91,8 @@ function Run ($rootScope, $state, AuthService) {
   //   if (toState.name === 'login') {
   //     return;
   //   }
-  
-  //   if (!AuthService.isAuthenticated) {
+
+  //   if (!Auth.isAuthenticated) {
   //     event.preventDefault()
   //     toParams.state = toState.name;
   //     $state.go('login', { reroute: toParams } )

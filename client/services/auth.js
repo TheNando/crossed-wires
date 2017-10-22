@@ -1,8 +1,8 @@
-module.exports = AuthService;
+module.exports = Auth;
 
-AuthService.$inject = [];
+Auth.$inject = [];
 
-function AuthService () {
+function Auth () {
   var vm = this;
   vm.authenticate = authenticate;
 

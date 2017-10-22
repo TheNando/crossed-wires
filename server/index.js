@@ -4,11 +4,11 @@ const _ = require('lodash')
 const Koa = require('koa')
 const Cors = require('koa2-cors');
 
+const Names = require('./names.js')
 const Questions = require('./questions')
+const Robots = require('./robots')
 const Sessions = require('./sessions')
 const Utils = require('./utils')
-const Teams = require('./teams')
-const Names = require('./names.js')
 
 let app = new Koa()
 let router = new (require('koa-trie-router'))()
@@ -58,13 +58,13 @@ router.get('/admin/info',
     async (ctx, next) => {
         ctx.body = {
             questions: Questions.info(),
-            teams: Teams.info()
+            robots: Teams.info()
         }
     }
 )
 
 router.post('/names/generate',
-    async function (ctx, next) {
+    async (ctx, next) => {
         ctx.body = Names.generate()
     }
 )
@@ -72,7 +72,7 @@ router.post('/names/generate',
 router.post('/login',
     async (ctx, next) => {
         let post = await Utils.getBody(ctx)
-        ctx.body = Sessions.newUser(post)
+        ctx.body = Sessions.login(post)
     }
 )
 
@@ -82,10 +82,16 @@ router.get('/question',
     }
 )
 
-router.post('/teams',
-    async function (ctx, next) {
+router.get('/robots',
+    async (ctx, next) => {
+        ctx.body = Robots.list()
+    }
+)
+
+router.post('/robots',
+    async (ctx, next) => {
         let post = await Utils.getBody(ctx)
-        ctx.body = Teams.newTeam(post.name, post.color)
+        ctx.body = Robots.add(post.name, post.team, post.color)
     }
 )
 

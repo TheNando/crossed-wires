@@ -2,7 +2,7 @@
   "name": "crossed-wires",
   "version": "0.0.5",
   "author": "Nando Peña",
-  "license": "None",
+  "license": "MIT",
   "scripts": {
     "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose",
     "host-docs": "cd docs; python3 -m http.server; cd ..",
@@ -17,25 +17,26 @@
     "url": "https://github.com/TheNando/crossed-wires.git"
   },
   "dependencies": {
-    "angular": "^1.6.4",
-    "angular-animate": "^1.6.4",
-    "angular-aria": "^1.6.4",
-    "angular-material": "^1.1.4",
-    "angular-resource": "^1.6.4",
+    "angular-animate": "1.6.4",
+    "angular-aria": "1.6.4",
+    "angular-material": "1.1.5",
+    "angular-messages": "1.6.4",
+    "angular-resource": "1.6.4",
     "angular-ui-router": "^0.3.2",
-    "avatar-generator": "^1.0.8",
-    "firebase-admin": "^5.2.1",
-    "koa": "^2.2.0",
-    "koa-trie-router": "^2.1.2",
-    "koa2-cors": "^2.0.3",
-    "lodash": "^4.17.4",
-    "stylus": "^0.54.5"
+    "angular": "1.6.4",
+    "avatar-generator": "1.0.8",
+    "firebase-admin": "5.4.0",
+    "koa-trie-router": "2.1.2",
+    "koa": "2.2.0",
+    "koa2-cors": "2.0.3",
+    "lodash": "4.17.4",
+    "stylus": "0.54.5"
   },
   "devDependencies": {
-    "browser-sync": "^2.17.5",
-    "jsdoc": "^3.4.3",
-    "minami": "^1.2.3",
-    "nodemon": "^1.11.0",
-    "watchify": "^3.8.0"
+    "browser-sync": "2.17.5",
+    "jsdoc": "3.4.3",
+    "minami": "1.2.3",
+    "nodemon": "1.11.0",
+    "watchify": "3.9.0"
   }
 }

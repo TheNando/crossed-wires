@@ -11,11 +11,12 @@ const baseSession = {
 const baseUser = {
     email: null,
     handle: null,
-    team: null
+    robot: null
 }
 
 /** Class used to create users and user sessions. */
 class Sessions {
+
     /** Create an instance of Sessions class. */
     constructor () {
         this.sessions = []
@@ -26,33 +27,33 @@ class Sessions {
      *
      * @return {Object} Newly generated user session.
      */
-    newUser (login) {
+    login (user) {
         let session
 
-        if (!login.email) {
+        if (!user.email) {
             return null
         }
 
         // Check for pre-existing user session with email
-        session = this.sessions.find(session => login.email === session.user.email)
-        
+        session = this.sessions.find(session => user.email === session.user.email)
+
         if (!session) {
 
-            // Do not allow user to use the same name as a logged in user
-            if (this.sessions.find(session => login.handle === session.user.handle)) {
+            // Do not allow user to use same name as another logged in user
+            if (this.sessions.find(session => user.handle === session.user.handle)) {
                 throw {
                     status: 409,
-                    message: `Handle "${login.handle}" is already in use.`
+                    message: `Handle "${user.handle}" is already in use.`
                 }
             }
 
-            let user = Object.assign({}, baseUser)
             session = Object.assign({}, baseSession)
 
             session.id = Utils.generateId()
-            session.user = login
+            session.user = user
 
             this.sessions.push(session)
+            console.log(`${user.handle} has logged in.`)
         }
 
         return session

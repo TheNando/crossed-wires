@@ -155,7 +155,7 @@ class Questions {
 
         console.log(this.current)
 
-        Db.getRef('question/current').set(this.current)
+        Db.collection('question').doc('current').set(this.current)
     }
 }
 
