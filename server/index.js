@@ -1,6 +1,5 @@
 'use strict'
 
-const _ = require('lodash')
 const Koa = require('koa')
 const Cors = require('koa2-cors');
 
@@ -66,6 +65,15 @@ router.get('/admin/info',
 router.post('/names/generate',
     async (ctx, next) => {
         ctx.body = Names.generate()
+    }
+)
+
+router.get('/login',
+    async (ctx, next) => {
+        ctx.body = {
+            name: Names.next(),
+            robots: Robots.list()
+        }
     }
 )
 

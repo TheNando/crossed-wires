@@ -289,16 +289,55 @@ const nouns = [
     'Zebra'
 ]
 
+
 /** Class used to generate random user names. */
 class Names {
+    /**
+     * Populate an internal generator of random names in a set to be used by
+     * Names.next() method.
+     */
+    constructor () {
+        this._list = this._listGen()
+    }
+
+    /**
+     * Create a generator primed with unique names.
+     * 
+     * @return {generator} A generator function that supplies unique names.
+     */
+    * _listGen () {
+        const namesSet = new Set();
+
+        while (namesSet.size < 200) {
+            namesSet.add(this.generate())
+        }
+
+        const names = _.shuffle([...namesSet])
+
+        while (names.length) {
+            yield names.pop()
+        }
+    }
+
     /**
      * Generate a random player name consisting of an adjective and a noun.
      * 
      * @return {string} Randomly generated name.
      */
-    static generate () {
+     generate () {
         return _.sample(adjectives) + ' ' + _.sample(nouns)
+    }
+
+    /**
+     * Retrieve the next unique name from the generator, guaranteed to be
+     * distinct from any other name generated during this runtime. Once the
+     * generator is out of names, this will error.
+     * 
+     * @return {string} Randomly generated name.
+     */
+    next () {
+        return this._list.next().value
     }
 }
 
-module.exports = Names
+module.exports = new Names()
