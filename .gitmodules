@@ -1,0 +1,3 @@
+[submodule "ui"]
+	path = ui
+	url = git@github.com:TheNando/crossed-wires-ui.git
