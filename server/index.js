@@ -9,6 +9,8 @@ const Robots = require('./robots')
 const Sessions = require('./sessions')
 const Utils = require('./utils')
 
+const PORT = 8080
+
 let app = new Koa()
 let router = new (require('koa-trie-router'))()
 
@@ -71,7 +73,7 @@ router.post('/names/generate',
 router.get('/login',
     async (ctx, next) => {
         ctx.body = {
-            name: Names.next(),
+            handle: Names.next(),
             robots: Robots.list()
         }
     }
@@ -105,6 +107,6 @@ router.post('/robots',
 
 
 app.use(router.middleware())
-app.listen(3000)
+app.listen(PORT)
 
-console.log('Listening on localhost port 3000')
+console.log(`Listening on localhost port ${PORT}`)
