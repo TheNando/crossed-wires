@@ -48,27 +48,46 @@ app.use(Cors())
 
 /* Routes */
 
-router.get('/admin/save-questions',
-    async (ctx, next) => {
-        Questions.save()
-        ctx.body = 'Questions saved'
-    }
-)
+// router.get('/admin/save-questions',
+//     async (ctx, next) => {
+//         Questions.save()
+//         ctx.body = 'Questions saved'
+//     }
+// )
 
-router.get('/admin/info',
-    async (ctx, next) => {
-        ctx.body = {
-            questions: Questions.info(),
-            robots: Teams.info()
-        }
-    }
-)
+// router.get('/admin/info',
+//     async (ctx, next) => {
+//         ctx.body = {
+//             questions: Questions.info(),
+//             robots: Teams.info()
+//         }
+//     }
+// )
 
-router.post('/names/generate',
-    async (ctx, next) => {
-        ctx.body = Names.generate()
-    }
-)
+// router.post('/names/generate',
+//     async (ctx, next) => {
+//         ctx.body = Names.generate()
+//     }
+// )
+
+// router.get('/robots',
+//     async (ctx, next) => {
+//         ctx.body = Robots.list()
+//     }
+// )
+
+// router.post('/robots',
+//     async (ctx, next) => {
+//         let post = await Utils.getBody(ctx)
+//         ctx.body = Robots.add(post.name, post.team, post.color)
+//     }
+// )
+
+// router.get('/question',
+//     async (ctx, next) => {
+//         ctx.body = Questions.get()
+//     }
+// )
 
 router.get('/login',
     async (ctx, next) => {
@@ -82,26 +101,7 @@ router.get('/login',
 router.post('/login',
     async (ctx, next) => {
         let post = await Utils.getBody(ctx)
-        ctx.body = Sessions.login(post)
-    }
-)
-
-router.get('/question',
-    async (ctx, next) => {
-        ctx.body = Questions.get()
-    }
-)
-
-router.get('/robots',
-    async (ctx, next) => {
-        ctx.body = Robots.list()
-    }
-)
-
-router.post('/robots',
-    async (ctx, next) => {
-        let post = await Utils.getBody(ctx)
-        ctx.body = Robots.add(post.name, post.team, post.color)
+        ctx.body = { session: Sessions.login(post) }
     }
 )
 
