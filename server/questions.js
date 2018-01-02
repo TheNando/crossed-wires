@@ -8,6 +8,8 @@ const Utils = require('./utils')
 const dataPath = './server/data/questions.json'
 const questionsDir = './server/questions/'
 
+const REFRESH_INTERVAL = 20
+
 
 /** Class used to manipulate quiz question data. */
 class Questions {
@@ -32,7 +34,7 @@ class Questions {
         }
 
         // Bind 'this' so setNext can access instance within setInterval
-        setInterval(this.setNext.bind(this), 60 * 1000, this)
+        setInterval(this.setNext.bind(this), REFRESH_INTERVAL * 1000, this)
 
         // Prepare next quesion (which will become first question)
         this.next = this.random()
@@ -148,7 +150,7 @@ class Questions {
     setNext () {
         console.log('Setting next question')
         this.current = this.next
-        this.current.expires = _.now() + (10 * 1000)
+        this.current.expires = _.now() + (REFRESH_INTERVAL * 1000)
 
         this.next = this.random()
         this.current.nextCategory = this.next.category
