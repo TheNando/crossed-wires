@@ -93,7 +93,16 @@ router.get('/login',
     async (ctx, next) => {
         ctx.body = {
             handle: Names.next(),
-            robots: Robots.list()
+            robots: Robots.list(),
+            time: (new Date()).getTime()
+        }
+    }
+)
+
+router.get('/time',
+    async (ctx, next) => {
+        ctx.body = {
+            time: (new Date()).getTime()
         }
     }
 )
