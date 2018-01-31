@@ -4,11 +4,10 @@ const _ = require('lodash')
 const Db = require('./db')
 const fs = require('fs')
 const Utils = require('./utils')
+const Countdown = require('./countdown')
 
 const dataPath = './server/data/questions.json'
 const questionsDir = './server/questions/'
-
-const REFRESH_INTERVAL = 20
 
 
 /** Class used to manipulate quiz question data. */
@@ -33,8 +32,8 @@ class Questions {
             Object.assign(this, Questions.fromDir(questionsDir))
         }
 
-        // Bind 'this' so setNext can access instance within setInterval
-        setInterval(this.setNext.bind(this), REFRESH_INTERVAL * 1000, this)
+        // Bind 'this' so setNext can access instance within callback
+        Countdown.register('question', this.setNext.bind(this))
 
         // Prepare next quesion (which will become first question)
         this.next = this.random()
@@ -150,7 +149,7 @@ class Questions {
     setNext () {
         console.log('Setting next question')
         this.current = this.next
-        this.current.expires = _.now() + (REFRESH_INTERVAL * 1000)
+        this.current.expires = Countdown.nextTime
 
         this.next = this.random()
         this.current.nextCategory = this.next.category
