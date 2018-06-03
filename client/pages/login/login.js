@@ -24,7 +24,6 @@ class LoginController {
     }
     this._post('http://localhost:3000/login', payload)
   }
-
 }
 
 module.exports = {

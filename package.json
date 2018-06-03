@@ -6,8 +6,9 @@
   "scripts": {
     "generate-docs": "node_modules/.bin/jsdoc --configure .jsdoc.json --verbose",
     "host-docs": "cd docs; python3 -m http.server; cd ..",
-    "dev": "./node_modules/.bin/nodemon server 0.0.0.0 8080",
-    "debug": "./node_modules/.bin/nodemon --inspect server"
+    "serve": "node server 0.0.0.0 8080",
+    "dev": "nodemon server 0.0.0.0 8080",
+    "debug": "nodemon --inspect server 0.0.0.0 8080"
   },
   "repository": {
     "type": "git",
