@@ -67,8 +67,7 @@ class Sessions {
       }
 
       // Check that robot exists
-      const robot = Robots.has(login.robot)
-      if (!robot) {
+      if (!Robots.has(login.robot)) {
         throw {
           status: 400,
           message: `Specified robot does not exist`,
@@ -76,7 +75,7 @@ class Sessions {
       }
 
       // Add user to robot
-      Robots.addUser(login, robot)
+      Robots.addUser(login)
 
       session = Object.assign({}, baseSession)
 

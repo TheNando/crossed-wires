@@ -21,47 +21,50 @@ class Robots {
    * data, if exists.
    */
   constructor() {
+    const thisInstance = this
     this.robots = {}
 
     // Load data from database
     Db.collection('robots')
       .get()
-      .then((robots) => {
-        robots.forEach((robot) => (this.robots[robot.id] = robot.data()))
-      })
+      .then((robots) => robots.forEach((item) => thisInstance.add(item.data())))
       .catch((err) => {
         console.log('Error getting robots', err)
       })
   }
 
   /**
-   * Create a new robot.
+   * Add a robot to memory.
    *
    * @return {Object} Newly generated robot data.
    */
-  add(name, team, color) {
-    let robot
-    let test = ''
-
-    if (!name) {
-      return null
+  add(robot) {
+    if (!robot.name) {
+      throw {
+        status: 400,
+        message: 'Robot must have a name.',
+      }
     }
 
     // Check for pre-existing robot by name
-    robot = this.robots.find((robot) => name === robot.name)
-
-    if (robot) {
-      return null
+    if (this.robots[robot.name]) {
+      throw {
+        status: 400,
+        message: 'A robot with that name already exists.',
+      }
     }
 
-    robot = Object.assign({}, baseRobot)
+    const newRobot = Object.assign({}, baseRobot, robot)
 
-    robot.name = name
-    robot.color = rxIsColor.test(color)
-      ? color.toLowerCase()
+    // Check if color is valid
+    newRobot.colorHex = rxIsColor.test(robot.colorHex)
+      ? robot.colorHex.toLowerCase()
       : Utils.generateColor()
 
-    this.robots[name] = robot
+    // Convert users to set
+    newRobot.users = new Set(robot.users)
+
+    this.robots[robot.name] = newRobot
 
     return robot
   }
@@ -69,8 +72,9 @@ class Robots {
   /**
    * Add a logged in player to a robot
    */
-  addUser(user, robot) {
-    robot.users.add(user)
+  addUser(user) {
+    const robot = this.get(user.robot)
+    robot.users.add(user.handle)
     Db.collection('robots')
       .doc(robot.name)
       .update({ users: [...robot.users] })
