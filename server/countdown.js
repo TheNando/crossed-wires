@@ -1,6 +1,6 @@
-"use strict";
+'use strict'
 
-const REFRESH_INTERVAL = 20 * 1000;
+const REFRESH_INTERVAL = 20 * 1000
 
 /** Class used to execute a set of actions on an interval. */
 class Countdown {
@@ -10,12 +10,12 @@ class Countdown {
    * Set interval to execute registered actions on refresh interval
    */
   constructor(interval) {
-    this.actions = {};
-    this.keys = [];
-    this.nextTime = Date.now() + REFRESH_INTERVAL;
+    this.actions = {}
+    this.keys = []
+    this.nextTime = Date.now() + REFRESH_INTERVAL
 
     // Bind 'this' so execute can access instance within setInterval
-    setInterval(this.execute.bind(this), interval, this);
+    setInterval(this.execute.bind(this), interval, this)
   }
 
   /**
@@ -26,8 +26,8 @@ class Countdown {
    * @param {function} action - The function to execute.
    */
   register(key, action) {
-    this.actions[key] = action;
-    this.keys = Object.keys(this.actions);
+    this.actions[key] = action
+    this.keys = Object.keys(this.actions)
   }
 
   /**
@@ -35,17 +35,17 @@ class Countdown {
    * function. Not intended to be used manually.
    */
   execute() {
-    let index = 0;
-    const max = this.keys.length;
+    let index = 0
+    const max = this.keys.length
 
     for (; index < max; ) {
-      setImmediate(this.actions[this.keys[index++]]);
+      setImmediate(this.actions[this.keys[index++]])
     }
 
-    this.nextTime = Date.now() + REFRESH_INTERVAL;
+    this.nextTime = Date.now() + REFRESH_INTERVAL
   }
 }
 
-const singleton = new Countdown(REFRESH_INTERVAL);
+const singleton = new Countdown(REFRESH_INTERVAL)
 
-module.exports = singleton;
+module.exports = singleton

@@ -1,13 +1,13 @@
-"use strict";
+'use strict'
 
-const _ = require("lodash");
-const Db = require("./db");
-const fs = require("fs");
-const Utils = require("./utils");
-const Countdown = require("./countdown");
+const _ = require('lodash')
+const Db = require('./db')
+const fs = require('fs')
+const Utils = require('./utils')
+const Countdown = require('./countdown')
 
-const dataPath = "./server/data/questions.json";
-const questionsDir = "./server/questions/";
+const dataPath = './server/data/questions.json'
+const questionsDir = './server/questions/'
 
 /** Class used to manipulate quiz question data. */
 class Questions {
@@ -21,24 +21,24 @@ class Questions {
    * available question each time the configured duration has elapsed.
    */
   constructor() {
-    this.current = null;
+    this.current = null
 
     // Try and load data from json file before trying raw questions
-    Object.assign(this, Questions.fromJson(dataPath));
+    Object.assign(this, Questions.fromJson(dataPath))
 
     // If that failed, load raw questions
     if (_.isEmpty(this.items)) {
-      Object.assign(this, Questions.fromDir(questionsDir));
+      Object.assign(this, Questions.fromDir(questionsDir))
     }
 
     // Bind 'this' so setNext can access instance within callback
-    Countdown.register("question", this.setNext.bind(this));
+    Countdown.register('question', this.setNext.bind(this))
 
     // Prepare next quesion (which will become first question)
-    this.next = this.random();
+    this.next = this.random()
 
     // Set the first question
-    this.setNext();
+    this.setNext()
   }
 
   /**
@@ -51,15 +51,15 @@ class Questions {
    *                  category strings.
    */
   static fromDir(dir) {
-    let items = [];
-    let categories = [];
+    let items = []
+    let categories = []
 
-    fs.readdirSync(dir).forEach(category => {
-      let questions = Questions.fromText(category);
-      items = items.concat(questions);
-      categories.push(category);
-    });
-    return { items, categories };
+    fs.readdirSync(dir).forEach((category) => {
+      let questions = Questions.fromText(category)
+      items = items.concat(questions)
+      categories.push(category)
+    })
+    return { items, categories }
   }
 
   /**
@@ -71,12 +71,12 @@ class Questions {
    *                  category strings.
    */
   static fromJson(path) {
-    let items = Utils.readJsonSync(path);
+    let items = Utils.readJsonSync(path)
     let categories = _(items)
-      .map("category")
+      .map('category')
       .uniq()
-      .value();
-    return { items, categories };
+      .value()
+    return { items, categories }
   }
 
   /**
@@ -87,25 +87,25 @@ class Questions {
    * @return {Array} An array containing of question items.
    */
   static fromText(path) {
-    let questions = [];
-    let question = {};
+    let questions = []
+    let question = {}
 
-    let content = fs.readFileSync(questionsDir + path, "utf8");
+    let content = fs.readFileSync(questionsDir + path, 'utf8')
 
-    content.split("\n").forEach(line => {
-      if (line.startsWith("#Q")) {
-        question = { category: path, choices: [] };
-        question.text = line.substring(3);
-      } else if (line.startsWith("^")) {
-        question.answer = line.substring(2);
-      } else if (line !== "") {
-        question.choices.push(line.substring(2));
-      } else if (line === "" && question.text) {
-        questions.push(question);
+    content.split('\n').forEach((line) => {
+      if (line.startsWith('#Q')) {
+        question = { category: path, choices: [] }
+        question.text = line.substring(3)
+      } else if (line.startsWith('^')) {
+        question.answer = line.substring(2)
+      } else if (line !== '') {
+        question.choices.push(line.substring(2))
+      } else if (line === '' && question.text) {
+        questions.push(question)
       }
-    });
+    })
 
-    return questions;
+    return questions
   }
 
   /**
@@ -114,7 +114,7 @@ class Questions {
    * @return {Object} Currently active question.
    */
   get() {
-    return this.current;
+    return this.current
   }
 
   /**
@@ -127,12 +127,12 @@ class Questions {
     let info = _.zipObject(
       this.categories,
       _.range(0, this.categories.length, 0)
-    );
+    )
 
     // Count number of items for each category
-    _.forEach(this.items, item => (info[item.category] += 1));
+    _.forEach(this.items, (item) => (info[item.category] += 1))
 
-    return info;
+    return info
   }
 
   /**
@@ -141,31 +141,31 @@ class Questions {
    * @return {Object} A question.
    */
   random() {
-    return _.sample(this.items);
+    return _.sample(this.items)
   }
 
   /** Save currently loaded question data to JSON file */
   save() {
-    fs.writeFile(dataPath, JSON.stringify(this.items));
+    fs.writeFile(dataPath, JSON.stringify(this.items))
   }
 
   /** Set currently loaded question to next available question */
   setNext() {
-    console.log("Setting next question");
-    this.current = this.next;
-    this.current.expires = Countdown.nextTime;
+    console.log('Setting next question')
+    this.current = this.next
+    this.current.expires = Countdown.nextTime
 
-    this.next = this.random();
-    this.current.nextCategory = this.next.category;
+    this.next = this.random()
+    this.current.nextCategory = this.next.category
 
-    console.log(this.current);
+    console.log(this.current)
 
-    Db.collection("question")
-      .doc("current")
-      .set(this.current);
+    Db.collection('question')
+      .doc('current')
+      .set(this.current)
   }
 }
 
-const singleton = new Questions();
+const singleton = new Questions()
 
-module.exports = singleton;
+module.exports = singleton

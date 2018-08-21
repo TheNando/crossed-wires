@@ -1,18 +1,18 @@
-"use strict";
+'use strict'
 
-const Db = require("./db");
-const fs = require("fs");
-const Utils = require("./utils");
+const fs = require('fs')
+const Db = require('./db')
+const Utils = require('./utils')
 
 const baseRobot = {
   bits: 0,
   colorHex: null,
   name: null,
-  robot: null,
-  members: []
-};
+  users: new Set(),
+  team: null,
+}
 
-const rxIsColor = /^#[0-9A-F]{6}$/i;
+const rxIsColor = /^#[0-9A-F]{6}$/i
 
 /** Class used to store robots data. */
 class Robots {
@@ -21,17 +21,17 @@ class Robots {
    * data, if exists.
    */
   constructor() {
-    this.robots = {};
+    this.robots = {}
 
     // Load data from database
-    Db.collection("robots")
+    Db.collection('robots')
       .get()
-      .then(robots => {
-        robots.forEach(robot => (this.robots[robot.id] = robot.data()));
+      .then((robots) => {
+        robots.forEach((robot) => (this.robots[robot.id] = robot.data()))
       })
-      .catch(err => {
-        console.log("Error getting robots", err);
-      });
+      .catch((err) => {
+        console.log('Error getting robots', err)
+      })
   }
 
   /**
@@ -40,30 +40,47 @@ class Robots {
    * @return {Object} Newly generated robot data.
    */
   add(name, team, color) {
-    let robot;
-    let test = "";
+    let robot
+    let test = ''
 
     if (!name) {
-      return null;
+      return null
     }
 
     // Check for pre-existing robot by name
-    robot = this.robots.find(robot => name === robot.name);
+    robot = this.robots.find((robot) => name === robot.name)
 
     if (robot) {
-      return null;
+      return null
     }
 
-    robot = Object.assign({}, baseRobot);
+    robot = Object.assign({}, baseRobot)
 
-    robot.name = name;
+    robot.name = name
     robot.color = rxIsColor.test(color)
       ? color.toLowerCase()
-      : Utils.generateColor();
+      : Utils.generateColor()
 
-    this.robots[name] = robot;
+    this.robots[name] = robot
 
-    return robot;
+    return robot
+  }
+
+  /**
+   * Add a logged in player to a robot
+   */
+  addUser(user, robot) {
+    robot.users.add(user)
+    Db.collection('robots')
+      .doc(robot.name)
+      .update({ users: [...robot.users] })
+      .catch((err) => {
+        robot.users.delete(user)
+        throw {
+          status: 500,
+          message: `Error adding user to robot: ${err}`,
+        }
+      })
   }
 
   /**
@@ -72,7 +89,7 @@ class Robots {
    * @return {Object} Robot data.
    */
   get(name) {
-    return this.robots[name];
+    return this.robots[name]
   }
 
   /**
@@ -81,7 +98,16 @@ class Robots {
    * @return {Array} Currently loaded robot names.
    */
   getNames() {
-    return Object.keys(this.robots);
+    return Object.keys(this.robots)
+  }
+
+  /**
+   * Retrieves true if robot exists in collection.
+   *
+   * @return {Boolean} True if robot exists.
+   */
+  has(name) {
+    return name in this.robots
   }
 
   /**
@@ -90,10 +116,10 @@ class Robots {
    * @return {Object} Array of currently loaded robots.
    */
   list() {
-    return Object.values(this.robots);
+    return Object.values(this.robots)
   }
 }
 
-const singleton = new Robots();
+const singleton = new Robots()
 
-module.exports = singleton;
+module.exports = singleton

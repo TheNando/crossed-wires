@@ -1,7 +1,7 @@
-"use strict";
+'use strict'
 
-const fs = require("fs");
-const crypto = require("crypto");
+const fs = require('fs')
+const crypto = require('crypto')
 
 /** Class containing utility methods to ease common tasks. */
 class Utils {
@@ -13,7 +13,7 @@ class Utils {
    * @return {string} hex color value string
    */
   static generateColor() {
-    return "#" + crypto.randomBytes(3).toString("hex");
+    return '#' + crypto.randomBytes(3).toString('hex')
   }
 
   /**
@@ -22,7 +22,7 @@ class Utils {
    * @return {string} session ID
    */
   static generateId() {
-    return crypto.randomBytes(16).toString("hex");
+    return crypto.randomBytes(16).toString('hex')
   }
 
   /**
@@ -33,10 +33,10 @@ class Utils {
    */
   static getBody(ctx) {
     return new Promise(function(resolve, reject) {
-      let data = "";
-      ctx.req.on("data", chunk => (data += chunk));
-      ctx.req.on("end", chunk => resolve(JSON.parse(data)));
-    });
+      let data = ''
+      ctx.req.on('data', (chunk) => (data += chunk))
+      ctx.req.on('end', (chunk) => resolve(JSON.parse(data)))
+    })
   }
 
   /**
@@ -49,14 +49,14 @@ class Utils {
    */
   static readFile(file) {
     return new Promise(function(resolve, reject) {
-      fs.readFile(file, "utf8", (err, data) => {
+      fs.readFile(file, 'utf8', (err, data) => {
         if (err) {
-          reject(err);
+          reject(err)
         }
 
-        resolve(data);
-      });
-    });
+        resolve(data)
+      })
+    })
   }
 
   /**
@@ -68,7 +68,7 @@ class Utils {
    *   - @reject returns readFile error
    */
   static readJson(file) {
-    return Utils.readFile(file).then(data => JSON.parse(data));
+    return Utils.readFile(file).then((data) => JSON.parse(data))
   }
 
   /**
@@ -78,17 +78,17 @@ class Utils {
    * @return {Object} file data as JSON object
    */
   static readJsonSync(file) {
-    let fileExists = fs.existsSync(file);
+    let fileExists = fs.existsSync(file)
     if (!fileExists) {
-      return null;
+      return null
     }
 
     try {
-      return JSON.parse(fs.readFileSync(file));
+      return JSON.parse(fs.readFileSync(file))
     } catch (error) {
-      return null;
+      return null
     }
   }
 }
 
-module.exports = Utils;
+module.exports = Utils

@@ -20,11 +20,18 @@
     "koa-trie-router": "2.1.2",
     "koa": "2.2.0",
     "koa2-cors": "2.0.3",
-    "lodash": "4.17.4"
+    "lodash": "4.17.4",
+    "prettier": "^1.13.4"
   },
   "devDependencies": {
     "jsdoc": "3.4.3",
     "minami": "1.2.3",
     "nodemon": "1.11.0"
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "es5"
   }
 }
