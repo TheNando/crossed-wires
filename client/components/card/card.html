@@ -1,8 +1,0 @@
-<element
-    ng-repeat="element in $ctrl.template.elements track by element.id"
-    ng-class="{
-      editing: ($ctrl.mode === 'element' && element.id !== $ctrl.selectedElementId),
-      selected: ($ctrl.mode === 'element' && element.id === $ctrl.selectedElementId) }"
-    ng-style="element.style">
-  {{ $ctrl.mode === 'preview' ? $ctrl.instance.data[$index] : element.name }}
-</element>
