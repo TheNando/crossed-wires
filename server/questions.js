@@ -21,6 +21,7 @@ class Questions {
    * available question each time the configured duration has elapsed.
    */
   constructor() {
+    this.answers = {}
     this.current = null
 
     // Try and load data from json file before trying raw questions
@@ -106,6 +107,17 @@ class Questions {
     })
 
     return questions
+  }
+
+  /**
+   * Submit a quiz answer
+   *
+   * @param {string} id
+   * @param {Object} data
+   * @memberof Questions
+   */
+  answer(id, data) {
+    this.answers[id] = { ...data, time: Date.now() }
   }
 
   /**

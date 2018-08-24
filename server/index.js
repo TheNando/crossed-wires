@@ -3,49 +3,53 @@
 const Koa = require('koa')
 const Cors = require('koa2-cors')
 
+const Middleware = require('./middleware.js')
 const Names = require('./names.js')
 const Questions = require('./questions')
 const Robots = require('./robots')
 const Sessions = require('./sessions')
-const Utils = require('./utils')
 
 const PORT = 8080
 
 let app = new Koa()
 let router = new (require('koa-trie-router'))()
 
-// Log call and time
-app.use(async (ctx, next) => {
-  const start = new Date()
-  await next()
-  const ms = new Date() - start
-  console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
-})
-
-// Pretty print option
-app.use(async (ctx, next) => {
-  await next()
-  if (ctx.query.pretty === '1') {
-    ctx.body = JSON.stringify(ctx.body, null, 4)
-  }
-})
-
-// Handle errors
-app.use(async (ctx, next) => {
-  try {
-    await next()
-  } catch (err) {
-    console.log('Error: ')
-    console.log(err)
-    ctx.throw(err.status || 500, err.message)
-    ctx.app.emit('error', err, ctx)
-  }
-})
-
-// Enable Cross-Origin Resource Sharing
+app.use(Middleware.parseBody)
+app.use(Middleware.applyAuthToken)
+app.use(Middleware.logRequest)
+app.use(Middleware.prettyPrint)
+app.use(Middleware.handleErrors)
 app.use(Cors())
 
 /* Routes */
+
+router.get('/login', async (ctx, next) => {
+  ctx.body = {
+    handle: Names.next(),
+    robots: Robots.list(),
+    time: Date.now(),
+  }
+})
+
+router.get('/time', async (ctx, next) => {
+  ctx.body = {
+    time: Date.now(),
+  }
+})
+
+router.post('/login', async (ctx, next) => {
+  ctx.body = { session: Sessions.login(ctx.req.body) }
+})
+
+router.post('/answer', async (ctx, next) => {
+  Questions.answer(ctx.req.sessionId, ctx.req.body)
+  ctx.status = 204
+})
+
+app.use(router.middleware())
+app.listen(PORT)
+
+console.log(`Listening on localhost port ${PORT}`)
 
 // router.get('/admin/save-questions',
 //     async (ctx, next) => {
@@ -87,32 +91,3 @@ app.use(Cors())
 //         ctx.body = Questions.get()
 //     }
 // )
-
-router.get('/login', async (ctx, next) => {
-  ctx.body = {
-    handle: Names.next(),
-    robots: Robots.list(),
-    time: new Date().getTime(),
-  }
-})
-
-router.get('/time', async (ctx, next) => {
-  ctx.body = {
-    time: new Date().getTime(),
-  }
-})
-
-router.post('/login', async (ctx, next) => {
-  let post = await Utils.getBody(ctx)
-  ctx.body = { session: Sessions.login(post) }
-})
-
-router.post('/answer', async (ctx, next) => {
-  let post = await Utils.getBody(ctx)
-  ctx.body = { session: Sessions.login(post) }
-})
-
-app.use(router.middleware())
-app.listen(PORT)
-
-console.log(`Listening on localhost port ${PORT}`)

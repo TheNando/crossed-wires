@@ -26,20 +26,6 @@ class Utils {
   }
 
   /**
-   * Retrieve context request data payload as object
-   *
-   * @param {Object} ctx - Koa context from a POST or PUT route event
-   * @return {Object} body payload object
-   */
-  static getBody(ctx) {
-    return new Promise(function(resolve, reject) {
-      let data = ''
-      ctx.req.on('data', (chunk) => (data += chunk))
-      ctx.req.on('end', (chunk) => resolve(JSON.parse(data)))
-    })
-  }
-
-  /**
    * Asynchronously read UTF-8 encoded file using Promise pattern.
    *
    * @param {string} file - The path string of file to read
