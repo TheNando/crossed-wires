@@ -4,7 +4,6 @@ const _ = require('lodash')
 const Db = require('./db')
 const fs = require('fs')
 const Utils = require('./utils')
-const Countdown = require('./countdown')
 
 const dataPath = './server/data/questions.json'
 const questionsDir = './server/questions/'
@@ -32,14 +31,8 @@ class Questions {
       Object.assign(this, Questions.fromDir(questionsDir))
     }
 
-    // Bind 'this' so setNext can access instance within callback
-    Countdown.register('question', this.setNext.bind(this))
-
     // Prepare next quesion (which will become first question)
     this.next = this.random()
-
-    // Set the first question
-    this.setNext()
   }
 
   /**
@@ -147,6 +140,20 @@ class Questions {
     return info
   }
 
+  async nextEvent() {
+    this.processAnswers()
+    this.setNext()
+  }
+
+  /**
+   * Assign points for correct answers
+   */
+  processAnswers() {
+    // const correct = Object.keys(this.answers).reduce((agg, id) => {
+    //   const answer = this.answers[id]
+    // }, {answers})
+  }
+
   /**
    * Retrieve a random question from all loaded questions.
    *
@@ -162,10 +169,9 @@ class Questions {
   }
 
   /** Set currently loaded question to next available question */
-  setNext() {
+  async setNext(nextTime) {
     console.log('Setting next question')
     this.current = this.next
-    this.current.expires = Countdown.nextTime
 
     this.next = this.random()
     this.current.nextCategory = this.next.category
@@ -178,6 +184,4 @@ class Questions {
   }
 }
 
-const singleton = new Questions()
-
-module.exports = singleton
+module.exports = Questions

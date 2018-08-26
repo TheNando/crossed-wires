@@ -3,6 +3,7 @@
 const Koa = require('koa')
 const Cors = require('koa2-cors')
 
+const Countdown = require('./countdown')
 const Middleware = require('./middleware.js')
 const Names = require('./names.js')
 const Questions = require('./questions')
@@ -50,6 +51,11 @@ app.use(router.middleware())
 app.listen(PORT)
 
 console.log(`Listening on localhost port ${PORT}`)
+
+/* Register even loops */
+const questions = new Questions()
+Countdown.register('question', questions.nextEvent.bind(questions))
+Countdown.start()
 
 // router.get('/admin/save-questions',
 //     async (ctx, next) => {
