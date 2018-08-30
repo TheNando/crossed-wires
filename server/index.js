@@ -22,6 +22,11 @@ app.use(Middleware.prettyPrint)
 app.use(Middleware.handleErrors)
 app.use(Cors())
 
+/* Register event loops */
+const questions = new Questions()
+Countdown.register('question', questions.nextEvent.bind(questions))
+Countdown.start()
+
 /* Routes */
 
 router.get('/login', async (ctx, next) => {
@@ -43,7 +48,7 @@ router.post('/login', async (ctx, next) => {
 })
 
 router.post('/answer', async (ctx, next) => {
-  Questions.answer(ctx.req.sessionId, ctx.req.body)
+  questions.answer(ctx.req.sessionId, ctx.req.body)
   ctx.status = 204
 })
 
@@ -51,11 +56,6 @@ app.use(router.middleware())
 app.listen(PORT)
 
 console.log(`Listening on localhost port ${PORT}`)
-
-/* Register even loops */
-const questions = new Questions()
-Countdown.register('question', questions.nextEvent.bind(questions))
-Countdown.start()
 
 // router.get('/admin/save-questions',
 //     async (ctx, next) => {

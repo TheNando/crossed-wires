@@ -1,16 +1,15 @@
 'use strict'
 
-const REFRESH_INTERVAL = 200 * 1000
+const REFRESH_INTERVAL = 1000 * 1000
 
 /** Class used to execute a set of actions on an interval. */
 class Countdown {
   /**
    * Create an instance of Countdown class.
-   *
-   * Set interval to execute registered actions on refresh interval
    */
-  constructor(interval) {
+  constructor() {
     this.actions = []
+    this.nextTime = 0
   }
 
   /**
@@ -24,15 +23,19 @@ class Countdown {
     this.actions.push({ key, action })
   }
 
+  setNextTime() {
+    this.nextTime = Date.now() + REFRESH_INTERVAL
+  }
+
   start() {
-    setTimeout(this.execute, 0, this.actions)
-    setInterval(this.execute, REFRESH_INTERVAL, this.actions)
+    setTimeout(this.execute.bind(this), 0, this.actions)
+    setInterval(this.execute.bind(this), REFRESH_INTERVAL, this.actions)
   }
 
   /** Asynchronously execute each action in queue. Not for manual use. */
   execute(actions) {
-    const nextTime = Date.now() + REFRESH_INTERVAL
-    Promise.all(actions.map((item) => item.action(nextTime)))
+    this.setNextTime()
+    Promise.all(actions.map((item) => item.action(this.nextTime)))
   }
 }
 

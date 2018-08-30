@@ -1,6 +1,7 @@
 'use strict'
 
 const _ = require('lodash')
+const Countdown = require('./countdown')
 const Db = require('./db')
 const fs = require('fs')
 const Utils = require('./utils')
@@ -65,7 +66,11 @@ class Questions {
    *                  category strings.
    */
   static fromJson(path) {
-    let items = Utils.readJsonSync(path)
+    let items = Utils.readJsonSync(path).map((item) => ({
+      ...item,
+      answer: item.choices.findIndex((choice) => choice === item.answer),
+    }))
+
     let categories = _(items)
       .map('category')
       .uniq()
@@ -110,7 +115,7 @@ class Questions {
    * @memberof Questions
    */
   answer(id, data) {
-    this.answers[id] = { ...data, time: Date.now() }
+    this.answers[id] = { ...data, id, time: Date.now() }
   }
 
   /**
@@ -149,9 +154,40 @@ class Questions {
    * Assign points for correct answers
    */
   processAnswers() {
-    // const correct = Object.keys(this.answers).reduce((agg, id) => {
-    //   const answer = this.answers[id]
-    // }, {answers})
+    let totalDuration = 0
+    const correctMap = Object.values(this.answers).reduce((agg, item) => {
+      // Exit if answer is incorrect
+      if (item.answer !== this.current.answer) {
+        return agg
+      }
+
+      // Set default if undefined
+      if (!agg[item.robot]) {
+        agg[item.robot] = {
+          name: item.robot,
+          duration: 0,
+        }
+      }
+
+      // Running total of remaining time on correct answer per robot
+      const duration = this.current.expires - item.time
+      agg[item.robot].duration += duration
+
+      // Running total of all remaining time
+      totalDuration += duration
+      return agg
+    }, {})
+
+    // Calculate percentage earned
+    const correct = Object.values(correctMap).map((item) => ({
+      ...item,
+      percentage: item.duration / totalDuration,
+    }))
+
+    // TODO: Increase team bits by percentage times BASE REWARD
+    console.log('Correct:')
+    console.log(correct)
+    this.answers = {}
   }
 
   /**
@@ -172,6 +208,7 @@ class Questions {
   async setNext(nextTime) {
     console.log('Setting next question')
     this.current = this.next
+    this.current.expires = Countdown.nextTime
 
     this.next = this.random()
     this.current.nextCategory = this.next.category
