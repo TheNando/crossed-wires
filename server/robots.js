@@ -70,24 +70,6 @@ class Robots {
   }
 
   /**
-   * Add a logged in player to a robot
-   */
-  addUser(user) {
-    const robot = this.get(user.robot)
-    robot.users.add(user.handle)
-    Db.collection('robots')
-      .doc(robot.name)
-      .update({ users: [...robot.users] })
-      .catch((err) => {
-        robot.users.delete(user)
-        throw {
-          status: 500,
-          message: `Error adding user to robot: ${err}`,
-        }
-      })
-  }
-
-  /**
    * Retrieves specific robot by name.
    *
    * @return {Object} Robot data.

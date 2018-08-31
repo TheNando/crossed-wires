@@ -24,6 +24,7 @@ app.use(Cors())
 
 /* Register event loops */
 const questions = new Questions()
+Sessions.loadSessions()
 Countdown.register('question', questions.nextEvent.bind(questions))
 Countdown.start()
 
@@ -37,14 +38,15 @@ router.get('/login', async (ctx, next) => {
   }
 })
 
+router.post('/login', async (ctx, next) => {
+  const session = await Sessions.login(ctx.req.body)
+  ctx.body = { session }
+})
+
 router.get('/time', async (ctx, next) => {
   ctx.body = {
     time: Date.now(),
   }
-})
-
-router.post('/login', async (ctx, next) => {
-  ctx.body = { session: Sessions.login(ctx.req.body) }
 })
 
 router.post('/answer', async (ctx, next) => {
