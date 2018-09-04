@@ -22,6 +22,8 @@ app.use(Middleware.prettyPrint)
 app.use(Middleware.handleErrors)
 app.use(Cors())
 
+Sessions.clearDbSessions()
+
 /* Register event loops */
 const questions = new Questions()
 Sessions.loadSessions()

@@ -22,6 +22,20 @@ class Sessions {
     this.sessions = {}
   }
 
+  async clearDbSessions() {
+    try {
+      console.log('Deleting previous sessions')
+      const sessionCollection = await Db.collection('sessions').get()
+      sessionCollection.docs.forEach((doc) => {
+        Db.collection('sessions')
+          .doc(doc.id)
+          .delete()
+      })
+    } catch (err) {
+      console.log('Error deleting previous sessions', err)
+    }
+  }
+
   async loadSessions() {
     try {
       const sessionCollection = await Db.collection('sessions').get()
